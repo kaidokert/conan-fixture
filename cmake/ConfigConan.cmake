@@ -39,14 +39,14 @@ if(NOT EXISTS ${conan_file})
     endif()
 
     file(RELATIVE_PATH REL_PATH ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR})
-    set(args install 
+    set(args install
         ${source_build_flag}
         -e CXX=${CMAKE_CXX_COMPILER}
         -e CC=${CMAKE_C_COMPILER}
-        -s build_type=${CMAKE_BUILD_TYPE} 
-        #-s compiler=${conan_compiler}
-        #-s compiler.version=${conan_compiler_version}
-        #-s compiler.libcxx=${conan_cxx_lib} 
+        -s build_type=${CMAKE_BUILD_TYPE}
+        -s compiler=${conan_compiler}
+        -s compiler.version=${conan_compiler_version}
+        -s compiler.libcxx=${conan_cxx_lib}
         ${REL_PATH})
     LIST(JOIN args " " joined_args)
     message("Conan install has not been run, running `${conan} ${joined_args}`")
