@@ -1,10 +1,3 @@
-#get_cmake_property(_variableNames VARIABLES)
-#list (SORT _variableNames)
-#foreach (_variableName ${_variableNames})
-#    message(STATUS "${_variableName}=${${_variableName}}")
-#endforeach()
-
-
 find_program(conan conan)
 if(NOT conan)
     message(FATAL_ERROR "Cannot find `conan` executable")
@@ -12,13 +5,10 @@ endif()
 
 set(conan_file ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 
-option(conan_source_build "help string describing option" True)
-set(source_build_flag "-b")
-if(conan_source_build)
-message("YES source build")
-else()
-message("NOT source build")
+option(conan_source_build "Perform full source build for dependencies " True)
 set(source_build_flag "")
+if(conan_source_build)
+    set(source_build_flag "-b")
 endif()
 
 if(NOT EXISTS ${conan_file})
