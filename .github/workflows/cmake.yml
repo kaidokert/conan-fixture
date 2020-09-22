@@ -4,18 +4,14 @@ on: [push]
 
 jobs:
   build:
-    name: ${{ matrix.platform }}
+    name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        buildtype: [Debug]
-        include:
-          - os: windows-latest
-            platform: windows
-          - os: ubuntu-latest
-            platform: linux
-          - os: macos-latest
-            platform: macos
+        os:
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
 
     steps:
     - uses: actions/checkout@v2
