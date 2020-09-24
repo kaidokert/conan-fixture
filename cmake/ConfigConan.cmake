@@ -15,6 +15,10 @@ else()
 endif()
 
 if(NOT EXISTS ${conan_file})
+    set(build_type ${CMAKE_BUILD_TYPE})
+    if(NOT DEFINED ${CMAKE_BUILD_TYPE})
+        set(build_type Debug)
+    endif()
     string(REGEX MATCH [0-9]+.[0-9]+ # Get major.minor only
         conan_compiler_version ${CMAKE_CXX_COMPILER_VERSION})
     set(conan_compiler "Visual Studio")
@@ -36,7 +40,7 @@ if(NOT EXISTS ${conan_file})
         ${source_build_flag}
         -e CXX=${CMAKE_CXX_COMPILER}
         -e CC=${CMAKE_C_COMPILER}
-        -s build_type=${CMAKE_BUILD_TYPE}
+        -s build_type=${build_type}
         -s compiler=${conan_compiler}
         -s compiler.version=${conan_compiler_version}
         -s compiler.libcxx=${conan_cxx_lib}
