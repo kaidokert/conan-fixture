@@ -34,4 +34,4 @@ jobs:
 
     - name: Exec
       working-directory: ${{runner.workspace}}/build
-      run: ./demo
+      run: bin/demo
