@@ -40,8 +40,13 @@ if(NOT EXISTS ${conan_file})
         -s build_type=${build_type}
         -s compiler=${conan_compiler}
         -s compiler.version=${conan_compiler_version}
-        -s compiler.libcxx=${conan_cxx_lib}
-        ${REL_PATH})
+        )
+    if(${conan_compiler} STREQUAL "Visual Studio")
+        message("VStudio")
+    else()
+        list(APPEND args -s compiler.libcxx=${conan_cxx_lib})
+    endif()
+    list(APPEND args ${REL_PATH})
     LIST(JOIN args " " joined_args)
     message("Conan install has not been run, running `${conan} ${joined_args}`")
     execute_process(COMMAND ${conan} ${args}
