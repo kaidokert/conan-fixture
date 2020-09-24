@@ -21,7 +21,7 @@ jobs:
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Install conan
-      run: pip install --user conan
+      run: pip install conan
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build
