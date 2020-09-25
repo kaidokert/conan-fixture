@@ -35,3 +35,7 @@ jobs:
     - name: Exec
       working-directory: ${{runner.workspace}}/build
       run: bin/demo
+
+    - name: Test
+      working-directory: ${{runner.workspace}}/build
+      run: ctest .
