@@ -18,15 +18,25 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
 
+    - if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install clang-tidy clang-format
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Install conan
-      run: pip install conan
+      run: pip install conan pre-commit
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build
-      run: cmake ${{ github.workspace }}
+      run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${{ github.workspace }}
+
+    - name: Clang-tidy & clang-format
+      working-directory: ${{runner.workspace}}
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        FILES=$( find . -path ./build -prune -o -type f \( -iname \*.cpp \) )
+        clang-tidy -p build $FILES
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
@@ -35,3 +45,7 @@ jobs:
     - name: Exec
       working-directory: ${{runner.workspace}}/build
       run: bin/demo
+
+    - name: Test
+      working-directory: ${{runner.workspace}}/build
+      run: ctest .

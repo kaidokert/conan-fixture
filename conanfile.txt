@@ -1,5 +1,7 @@
 [requires]
 yaml-cpp/[*]
+catch2/[~=2]
+trompeloeil/v38@rollbear/stable
 
 [generators]
 cmake
