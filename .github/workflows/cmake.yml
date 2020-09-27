@@ -22,7 +22,7 @@ jobs:
       run: cmake -E make_directory ${{runner.workspace}}/build
 
     - name: Install conan
-      run: pip install conan
+      run: pip install conan pre-commit
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build
@@ -32,9 +32,9 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: cmake --build .
 
-    - name: Clang-tidy
+    - name: Clang-tidy & clang-format
       if: matrix.os == 'ubuntu-latest'
-      run: sudo apt install clang-tidy && clang-tidy -p build
+      run: sudo apt install clang-tidy clang-format && pre-commit run --all-files
 
     - name: Exec
       working-directory: ${{runner.workspace}}/build
