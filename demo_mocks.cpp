@@ -3,8 +3,6 @@
 #include "catch2/catch.hpp"
 #include "demo_interface.h"
 
-void interface_func(Interface *); // function to test
-
 class Mock : public Interface {
 public:
   MAKE_MOCK2(foo, bool(int, std::string &), override);
@@ -19,7 +17,8 @@ TEST_CASE("Test interface mocks", "[mocks]") {
 
   Mock m;
 
-  trompeloeil::sequence seq1, seq2; // control order of matching calls
+  trompeloeil::sequence seq1;
+  trompeloeil::sequence seq2; // control order of matching calls
 
   int local_var = 0;
 
@@ -36,7 +35,7 @@ TEST_CASE("Test interface mocks", "[mocks]") {
       .IN_SEQUENCE(seq2); // must be first match for seq2
 
   REQUIRE_CALL(m, foo(gt(2), _)) // expect call to foo(int,std::string&)
-      .WITH(_2 == "")            // with int > 2 and empty string
+      .WITH(_2.empty())          // with int > 2 and empty string
       .IN_SEQUENCE(seq1, seq2)   // last for both seq1 and seq2
       .SIDE_EFFECT(_2 = "cat")   // and set param string to "cat"
       .RETURN(true);

@@ -26,11 +26,15 @@ jobs:
 
     - name: Configure CMake
       working-directory: ${{runner.workspace}}/build
-      run: cmake ${{ github.workspace }}
+      run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${{ github.workspace }}
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
       run: cmake --build .
+
+    - name: Clang-tidy
+      if: matrix.os == 'ubuntu-latest'
+      run: clang-tidy -p build
 
     - name: Exec
       working-directory: ${{runner.workspace}}/build
