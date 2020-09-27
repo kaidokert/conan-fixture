@@ -34,7 +34,7 @@ jobs:
 
     - name: Clang-tidy
       if: matrix.os == 'ubuntu-latest'
-      run: clang-tidy -p build
+      run: sudo apt install clang-tidy && clang-tidy -p build
 
     - name: Exec
       working-directory: ${{runner.workspace}}/build
