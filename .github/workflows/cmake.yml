@@ -34,7 +34,9 @@ jobs:
     - name: Clang-tidy & clang-format
       working-directory: ${{runner.workspace}}
       if: matrix.os == 'ubuntu-latest'
-      run: find . -name compile_commands.json; pre-commit run --all-files
+      run: |
+        FILES=$( find . -path ./build -prune -o -type f \( -iname \*.cpp \) )
+        clang-tidy -p build $FILES
 
     - name: Build
       working-directory: ${{runner.workspace}}/build
