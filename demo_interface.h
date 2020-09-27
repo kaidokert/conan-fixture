@@ -1,4 +1,5 @@
-
+#ifndef _DEMO_INTERFACE_H
+#define _DEMO_INTERFACE_H
 #include <string>
 
 class Interface {
@@ -8,3 +9,6 @@ public:
   virtual bool bar(int) = 0;
   virtual bool bar(std::string) = 0;
 };
+
+void interface_func(Interface *ifc);
+#endif
