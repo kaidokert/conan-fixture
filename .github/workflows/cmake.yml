@@ -18,6 +18,9 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
 
+    - if: matrix.os == 'ubuntu-latest'
+      run: sudo apt install clang-tidy clang-format
+
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
 
@@ -28,13 +31,14 @@ jobs:
       working-directory: ${{runner.workspace}}/build
       run: cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=ON ${{ github.workspace }}
 
+    - name: Clang-tidy & clang-format
+      working-directory: ${{runner.workspace}}
+      if: matrix.os == 'ubuntu-latest'
+      run: find . -name compile_commands.json; pre-commit run --all-files
+
     - name: Build
       working-directory: ${{runner.workspace}}/build
       run: cmake --build .
-
-    - name: Clang-tidy & clang-format
-      if: matrix.os == 'ubuntu-latest'
-      run: sudo apt install clang-tidy clang-format && pre-commit run --all-files
 
     - name: Exec
       working-directory: ${{runner.workspace}}/build
